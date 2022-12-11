@@ -85,12 +85,12 @@ class ArticleController extends Controller
     //查詢 enabled_at 於 2022/12/13 00:00:00 之後，enabled 為 true 的資料，按照 created_at 從新到舊排序，回傳第一筆資料的 subject 欄位內容
     public function querySpecific()
     {
-        $dt = new Carbon('2022/12/13 00:00:00');
+        $dt = new Carbon( '2022/12/13 00:00:00');
         $article = Article::select('subject')->
-        where('enabled_at', '>', $dt)->
-        where('enabled', true)->
-        orderBy('created_at', 'desc')->
-        first();
+            where('enabled_at', '>', $dt)->
+            where('enabled', true)->
+            orderBy('created_at', 'desc')->
+            first();
         return $article;
 
     }
@@ -99,15 +99,13 @@ class ArticleController extends Controller
     public function queryPagination()
     {
 
-        $dt = new Carbon('2022/12/13 00:00:00');
+        $dt = new Carbon( '2022/12/13 00:00:00');
         $article = Article::where('enabled_at', '>', $dt)
-        ->where('enabled', true)
-        ->orderBy('created_at', 'desc')
-        ->skip(1)
-        ->take(3)
-        ->get();
-
-
+            ->where('enabled', true)
+            ->orderBy('created_at', 'desc')
+            ->skip(1)
+            ->take(3)
+            ->get();
         return $article;
 
     }
@@ -115,8 +113,8 @@ class ArticleController extends Controller
     //查詢 enabled_at 介於 2022/12/10 00:00:00 和 2022/12/15 23:59:59 之間，sort 位於 $min 到 $max 之間的資料並回傳
     public function queryRange($min, $max)
     {
-        $dt1 = new Carbon('2022/12/13 00:00:00');
-        $dt2 = new Carbon('2022/12/15 23:59:59');
+        $dt1 = new Carbon( '2022/12/13 00:00:00');
+        $dt2 = new Carbon( '2022/12/15 23:59:59');
 
         $article = Article::select('subject')->whereBetween('enabled_at', [$dt1, $dt2])->whereBetween('sort', [$min, $max])->get();
         return $article;
