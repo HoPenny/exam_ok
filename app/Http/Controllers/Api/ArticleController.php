@@ -17,8 +17,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $article = Article::orderBy('sort', 'asc')->get();
-        return $article;
+        $articles = Article::orderBy('sort', 'asc')->get();
+        return $articles;
     }
 
     /**
@@ -84,8 +84,8 @@ class ArticleController extends Controller
     //查詢所有資料，只取 id , subject 以及 content 這三個欄位
     public function querySelect()
     {
-        $article = Article::select('id', 'subject', 'content')->get();
-        return $article;
+        $articles = Article::select('id', 'subject', 'content')->get();
+        return $articles;
 
     }
 
@@ -107,13 +107,13 @@ class ArticleController extends Controller
     {
 
         $dt = new Carbon('2022/12/13 00:00:00');
-        $article = Article::where('enabled_at', '>', $dt)
+        $articles = Article::where('enabled_at', '>', $dt)
             ->where('enabled', true)
             ->orderBy('created_at', 'desc')
             ->skip(1)
             ->take(3)
             ->get();
-        return $article;
+        return $articles;
 
     }
 
@@ -123,31 +123,31 @@ class ArticleController extends Controller
         $dt1 = new Carbon('2022/12/13 00:00:00');
         $dt2 = new Carbon('2022/12/15 23:59:59');
 
-        $article = Article::select('subject')->whereBetween('enabled_at', [$dt1, $dt2])->whereBetween('sort', [$min, $max])->get();
-        return $article;
+        $articles = Article::select('subject')->whereBetween('enabled_at', [$dt1, $dt2])->whereBetween('sort', [$min, $max])->get();
+        return $articles;
 
     }
 
     //根據所傳入的分類id，取出該分類所有 enabled 為 true 的資料，依照 sort 從小到大排序，回傳符合的資料
     public function queryByCgy($cgy_id)
     {
-        $article = Article::where('cgy_id', $cgy_id)->where('enabled', true)->orderBy('sort', 'asc')->get();
-        return $article;
+        $articles = Article::where('cgy_id', $cgy_id)->where('enabled', true)->orderBy('sort', 'asc')->get();
+        return $articles;
 
     }
 
     //試著使用 pluck() 來取得 id 為 key ， subject 為 value 的陣列
     public function queryPluck()
     {
-        $article = Article::pluck('subject', 'id');
-        return $article;
+        $articles = Article::pluck('subject', 'id');
+        return $articles;
     }
 
     //計算所有 enabled 為 true 的資料筆數後回傳，利用查詢方法 count()
     public function enabledCount()
     {
-        $article = Article::where('enabled', true)->count();
+        $num = Article::where('enabled', true)->count();
 
-        return $article;
+        return $num;
     }
 }
